@@ -220,7 +220,7 @@ function buyNow() {
         </div>
 
         <!-- Product Info -->
-        <div class="space-y-6">
+        <div class="text-left space-y-6">
           <div>
             <div class="mb-2 flex items-center space-x-2">
               <span class="text-sm text-blue-600 font-medium">{{ product.brand }}</span>
@@ -256,7 +256,7 @@ function buyNow() {
           </div>
 
           <!-- Price -->
-          <div class="rounded-lg bg-gray-50 p-6">
+          <div class="rounded-lg bg-gray-50 py-1 text-left">
             <div class="mb-4 flex items-baseline space-x-4">
               <span class="text-4xl text-red-600 font-bold">¥{{ product.price }}</span>
               <span v-if="product.originalPrice" class="text-xl text-gray-500 line-through">

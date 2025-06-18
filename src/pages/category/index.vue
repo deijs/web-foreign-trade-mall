@@ -203,6 +203,15 @@ function clearFilters() {
   selectedRating.value = ''
   currentPage.value = 1
 }
+
+function gotoDetail(product) {
+  router.push({
+    path: '/detail',
+    query: {
+      name: product.name,
+    },
+  })
+}
 </script>
 
 <template>
@@ -368,16 +377,15 @@ function clearFilters() {
             <div
               v-for="product in filteredProducts"
               :key="product.id"
-              class="group cursor-pointer overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg"
-              @click="router.push(`/detail/${product.name}`)"
+              class="group flex flex-col cursor-pointer overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg"
             >
-              <div class="relative">
+              <div class="relative" @click="gotoDetail(product)">
                 <img
                   :src="product.image"
                   :alt="product.name"
                   class="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 >
-                <div class="absolute right-3 top-3">
+                <div class="absolute right-3 top-3" @click.stop>
                   <button class="rounded-full bg-white/90 p-2 shadow-sm transition-colors hover:bg-white">
                     <Heart class="h-4 w-4 text-gray-600 hover:text-red-500" />
                   </button>
@@ -389,39 +397,46 @@ function clearFilters() {
                 </div>
               </div>
 
-              <div class="p-4">
-                <h3 class="line-clamp-2 mb-3 text-gray-900 font-medium leading-5">
-                  {{ product.name }}
-                </h3>
+              <div class="flex flex-grow flex-col p-4">
+                <div @click="gotoDetail(product)">
+                  <h3 class="line-clamp-2 mb-3 text-left text-gray-900 font-medium leading-5">
+                    {{ product.name }}
+                  </h3>
 
-                <!-- Rating -->
-                <div class="mb-3 flex items-center">
-                  <div class="flex">
-                    <Star
-                      v-for="i in 5"
-                      :key="i"
-                      class="h-4 w-4" :class="[
-                        i <= product.rating ? 'text-yellow-400 fill-current' : 'text-gray-300',
-                      ]"
-                    />
+                  <!-- Rating -->
+                  <div class="mb-3 flex items-center">
+                    <div class="flex">
+                      <Star
+                        v-for="i in 5"
+                        :key="i"
+                        class="h-4 w-4" :class="[
+                          i <= product.rating ? 'text-yellow-400 fill-current' : 'text-gray-300',
+                        ]"
+                      />
+                    </div>
+                    <span class="ml-2 text-sm text-gray-600">({{ product.reviews }})</span>
                   </div>
-                  <span class="ml-2 text-sm text-gray-600">({{ product.reviews }})</span>
+
+                  <!-- Price -->
+                  <div class="mb-4">
+                    <div class="flex items-baseline space-x-2">
+                      <span class="text-xl text-red-600 font-bold">¥{{ product.price }}</span>
+                      <span v-if="product.originalPrice" class="text-sm text-gray-500 line-through">
+                        ¥{{ product.originalPrice }}
+                      </span>
+                    </div>
+                  </div>
                 </div>
 
-                <!-- Price -->
-                <div class="mb-4">
-                  <div class="flex items-baseline space-x-2">
-                    <span class="text-xl text-red-600 font-bold">¥{{ product.price }}</span>
-                    <span v-if="product.originalPrice" class="text-sm text-gray-500 line-through">
-                      ¥{{ product.originalPrice }}
-                    </span>
-                  </div>
+                <div class="mt-auto">
+                  <!-- Add to Cart Button -->
+                  <button
+                    class="w-full rounded-lg bg-blue-600 px-4 py-2 text-sm text-white font-medium transition-colors hover:bg-blue-700"
+                    @click.stop
+                  >
+                    加入购物车
+                  </button>
                 </div>
-
-                <!-- Add to Cart Button -->
-                <button class="w-full rounded-lg bg-blue-600 px-4 py-2 text-sm text-white font-medium transition-colors hover:bg-blue-700">
-                  加入购物车
-                </button>
               </div>
             </div>
           </div>
@@ -432,9 +447,8 @@ function clearFilters() {
               v-for="product in filteredProducts"
               :key="product.id"
               class="flex gap-6 rounded-lg bg-white p-6 shadow-sm transition-shadow hover:shadow-lg"
-              @click="router.push(`/detail/${product.name}`)"
             >
-              <div class="relative flex-shrink-0">
+              <div class="relative flex-shrink-0" @click="router.push(`/detail/${product.name}`)">
                 <img
                   :src="product.image"
                   :alt="product.name"
@@ -448,14 +462,16 @@ function clearFilters() {
               </div>
 
               <div class="flex flex-1 flex-col">
-                <h3 class="mb-2 text-lg text-gray-900 font-medium">
-                  {{ product.name }}
-                </h3>
-                <p class="line-clamp-2 mb-3 flex-grow text-sm text-gray-600">
-                  {{ product.description }}
-                </p>
+                <div @click="router.push(`/detail/${product.name}`)">
+                  <h3 class="mb-2 cursor-pointer text-left text-lg text-gray-900 font-medium">
+                    {{ product.name }}
+                  </h3>
+                  <p class="line-clamp-2 mb-3 text-left text-sm text-gray-600">
+                    {{ product.description }}
+                  </p>
+                </div>
 
-                <div class="flex items-center justify-between">
+                <div class="mt-auto flex items-center justify-between">
                   <div class="space-y-2">
                     <div class="flex items-center">
                       <div class="flex">
@@ -478,10 +494,10 @@ function clearFilters() {
                   </div>
 
                   <div class="flex items-center space-x-3">
-                    <button class="border border-gray-300 rounded-lg p-2 transition-colors hover:bg-gray-50">
+                    <button class="border border-gray-300 rounded-lg p-2 transition-colors hover:bg-gray-50" @click.stop>
                       <Heart class="h-4 w-4 text-gray-600 hover:text-red-500" />
                     </button>
-                    <button class="rounded-lg bg-blue-600 px-6 py-2 text-white font-medium transition-colors hover:bg-blue-700">
+                    <button class="rounded-lg bg-blue-600 px-6 py-2 text-white font-medium transition-colors hover:bg-blue-700" @click.stop>
                       加入购物车
                     </button>
                   </div>
