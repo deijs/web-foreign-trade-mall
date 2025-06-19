@@ -20,6 +20,7 @@
     "@unhead/vue": "catalog:frontend",
     "@unocss/reset": "catalog:frontend",
     "@vueuse/core": "catalog:frontend",
+    "i18n-jsautotranslate": "catalog:frontend",
     "lucide-vue-next": "catalog:frontend",
     "nprogress": "catalog:frontend",
     "pinia": "catalog:frontend",

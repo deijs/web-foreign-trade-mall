@@ -125,6 +125,9 @@ catalogs:
     '@vueuse/core':
       specifier: ^13.0.0
       version: 13.0.0
+    lucide-vue-next:
+      specifier: ^0.514.0
+      version: 0.514.0
     nprogress:
       specifier: ^0.2.0
       version: 0.2.0
@@ -166,8 +169,11 @@ importers:
       '@vueuse/core':
         specifier: catalog:frontend
         version: 13.0.0(vue@3.5.13(typescript@5.8.2))
+      i18n-jsautotranslate:
+        specifier: ^3.16.0
+        version: 3.16.0
       lucide-vue-next:
-        specifier: ^0.514.0
+        specifier: catalog:frontend
         version: 0.514.0(vue@3.5.13(typescript@5.8.2))
       nprogress:
         specifier: catalog:frontend
@@ -3817,6 +3823,9 @@ packages:
   human-signals@8.0.0:
     resolution: {integrity: sha512-/1/GPCpDUCCYwlERiYjxoczfP0zfvZMU/OWgQPMya9AbAE24vseigFdhAMObpc8Q4lc/kjutPfUddDYyAmejnA==}
     engines: {node: '>=18.18.0'}
+
+  i18n-jsautotranslate@3.16.0:
+    resolution: {integrity: sha512-7VCoOA6FObz7w46gAqW80nGp9vTTY74Gui60lGx9mhQMGqtLETsSsAAfAjrtlBNY3rYNBO2IvFquhRZIaKOHSA==}
 
   iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
@@ -10177,6 +10186,8 @@ snapshots:
   human-signals@5.0.0: {}
 
   human-signals@8.0.0: {}
+
+  i18n-jsautotranslate@3.16.0: {}
 
   iconv-lite@0.4.24:
     dependencies:

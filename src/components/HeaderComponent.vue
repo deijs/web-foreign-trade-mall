@@ -109,6 +109,7 @@ function toggleCategoryMenu() {
               <a href="/orders" class="block px-4 py-2 hover:bg-gray-100">我的订单</a>
             </div>
           </div>
+          <LanguageSwitcher class="relative z-1000" />
 
           <!-- Mobile Menu -->
           <button
