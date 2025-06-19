@@ -1,10 +1,11 @@
 <script setup>
-import { ChevronRight, Grid, Heart, List, Star } from 'lucide-vue-next'
+import { ChevronRight, Grid, Heart, List, Minus, Plus, ShoppingCart, Star } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
-const _route = useRoute('/category/[name]')
 const router = useRouter()
+const _route = useRoute('/category/[name]')
+
 // Props (在实际应用中会从路由参数获取)
 const categoryName = ref('电子产品')
 const subcategoryName = ref('智能手机')
@@ -21,6 +22,9 @@ const selectedRating = ref('')
 // Pagination
 const currentPage = ref(1)
 const itemsPerPage = 12
+
+// Product quantities (用于管理每个商品的数量)
+const productQuantities = ref({})
 
 // Filter options
 const priceRanges = ref([
@@ -47,6 +51,7 @@ const products = ref([
     image: 'https://kzml2gyhtsfzfc357woi.lite.vusercontent.net/placeholder.svg?height=300&width=300',
     brand: '苹果',
     category: 'smartphone',
+    stock: 50,
   },
   {
     id: 2,
@@ -60,6 +65,7 @@ const products = ref([
     image: 'https://kzml2gyhtsfzfc357woi.lite.vusercontent.net/placeholder.svg?height=300&width=300',
     brand: '华为',
     category: 'smartphone',
+    stock: 30,
   },
   {
     id: 3,
@@ -73,6 +79,7 @@ const products = ref([
     image: 'https://kzml2gyhtsfzfc357woi.lite.vusercontent.net/placeholder.svg?height=300&width=300',
     brand: '小米',
     category: 'smartphone',
+    stock: 25,
   },
   {
     id: 4,
@@ -86,6 +93,7 @@ const products = ref([
     image: 'https://kzml2gyhtsfzfc357woi.lite.vusercontent.net/placeholder.svg?height=300&width=300',
     brand: '三星',
     category: 'smartphone',
+    stock: 40,
   },
   {
     id: 5,
@@ -99,6 +107,7 @@ const products = ref([
     image: 'https://kzml2gyhtsfzfc357woi.lite.vusercontent.net/placeholder.svg?height=300&width=300',
     brand: 'OPPO',
     category: 'smartphone',
+    stock: 35,
   },
   {
     id: 6,
@@ -112,6 +121,7 @@ const products = ref([
     image: 'https://kzml2gyhtsfzfc357woi.lite.vusercontent.net/placeholder.svg?height=300&width=300',
     brand: 'vivo',
     category: 'smartphone',
+    stock: 20,
   },
   {
     id: 7,
@@ -125,6 +135,7 @@ const products = ref([
     image: 'https://kzml2gyhtsfzfc357woi.lite.vusercontent.net/placeholder.svg?height=300&width=300',
     brand: '一加',
     category: 'smartphone',
+    stock: 15,
   },
   {
     id: 8,
@@ -138,6 +149,7 @@ const products = ref([
     image: 'https://kzml2gyhtsfzfc357woi.lite.vusercontent.net/placeholder.svg?height=300&width=300',
     brand: '苹果',
     category: 'smartphone',
+    stock: 60,
   },
 ])
 
@@ -196,12 +208,64 @@ const totalPages = computed(() => {
   return Math.ceil(products.value.length / itemsPerPage)
 })
 
+// Quantity management methods
+function getProductQuantity(productId) {
+  return productQuantities.value[productId] || 1
+}
+
+function updateQuantity(productId, quantity) {
+  const qty = Number.parseInt(quantity) || 1
+  const product = products.value.find(p => p.id === productId)
+  const maxQty = product?.stock || 99
+
+  productQuantities.value[productId] = Math.max(1, Math.min(qty, maxQty))
+}
+
+function increaseQuantity(productId) {
+  const currentQty = getProductQuantity(productId)
+  const product = products.value.find(p => p.id === productId)
+  const maxQty = product?.stock || 99
+
+  if (currentQty < maxQty) {
+    productQuantities.value[productId] = currentQty + 1
+  }
+}
+
+function decreaseQuantity(productId) {
+  const currentQty = getProductQuantity(productId)
+  if (currentQty > 1) {
+    productQuantities.value[productId] = currentQty - 1
+  }
+}
+
+function addToCart(product) {
+  const _quantity = getProductQuantity(product.id)
+  // 添加到购物车逻辑
+  // alert(`已添加 ${quantity} 件 "${product.name}" 到购物车`)
+}
+
 // Methods
 function clearFilters() {
   selectedPriceRange.value = ''
   selectedBrands.value = []
   selectedRating.value = ''
   currentPage.value = 1
+}
+
+function getBrandCount(brand) {
+  return products.value.filter(product => product.brand === brand).length
+}
+
+function getPriceRangeCount(range) {
+  const [min, max] = range.split('-').map(p => p.replace('+', ''))
+  return products.value.filter((product) => {
+    if (max) {
+      return product.price >= Number.parseInt(min) && product.price <= Number.parseInt(max)
+    }
+    else {
+      return product.price >= Number.parseInt(min)
+    }
+  }).length
 }
 
 function gotoDetail(product) {
@@ -301,14 +365,17 @@ function gotoDetail(product) {
                 价格区间
               </h3>
               <div class="space-y-2">
-                <label v-for="range in priceRanges" :key="range.value" class="flex items-center">
-                  <input
-                    v-model="selectedPriceRange"
-                    type="radio"
-                    :value="range.value"
-                    class="mr-2"
-                  >
-                  <span class="text-sm text-gray-700">{{ range.label }}</span>
+                <label v-for="range in priceRanges" :key="range.value" class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <input
+                      v-model="selectedPriceRange"
+                      type="radio"
+                      :value="range.value"
+                      class="mr-2"
+                    >
+                    <span class="text-sm text-gray-700">{{ range.label }}</span>
+                  </div>
+                  <span class="text-xs text-gray-500">({{ getPriceRangeCount(range.value) }})</span>
                 </label>
               </div>
             </div>
@@ -319,14 +386,17 @@ function gotoDetail(product) {
                 品牌
               </h3>
               <div class="space-y-2">
-                <label v-for="brand in brands" :key="brand" class="flex items-center">
-                  <input
-                    v-model="selectedBrands"
-                    type="checkbox"
-                    :value="brand"
-                    class="mr-2"
-                  >
-                  <span class="text-sm text-gray-700">{{ brand }}</span>
+                <label v-for="brand in brands" :key="brand" class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <input
+                      v-model="selectedBrands"
+                      type="checkbox"
+                      :value="brand"
+                      class="mr-2"
+                    >
+                    <span class="text-sm text-gray-700">{{ brand }}</span>
+                  </div>
+                  <span class="text-xs text-gray-500">({{ getBrandCount(brand) }})</span>
                 </label>
               </div>
             </div>
@@ -429,13 +499,43 @@ function gotoDetail(product) {
                 </div>
 
                 <div class="mt-auto">
-                  <!-- Add to Cart Button -->
-                  <button
-                    class="w-full rounded-lg bg-blue-600 px-4 py-2 text-sm text-white font-medium transition-colors hover:bg-blue-700"
-                    @click.stop
-                  >
-                    加入购物车
-                  </button>
+                  <!-- Quantity Selector and Add to Cart Button -->
+                  <div class="flex items-center space-x-2" @click.stop>
+                    <!-- Quantity Selector -->
+                    <div class="flex items-center border border-gray-300 rounded-lg">
+                      <button
+                        :disabled="getProductQuantity(product.id) <= 1"
+                        class="rounded-l-lg p-1 disabled:cursor-not-allowed hover:bg-gray-50 disabled:opacity-50"
+                        @click="decreaseQuantity(product.id)"
+                      >
+                        <Minus class="h-3 w-3" />
+                      </button>
+                      <input
+                        :value="getProductQuantity(product.id)"
+                        type="number"
+                        min="1"
+                        :max="product.stock || 99"
+                        class="w-10 border-0 text-center text-sm focus:outline-none"
+                        @input="updateQuantity(product.id, $event.target.value)"
+                      >
+                      <button
+                        :disabled="getProductQuantity(product.id) >= (product.stock || 99)"
+                        class="rounded-r-lg p-1 disabled:cursor-not-allowed hover:bg-gray-50 disabled:opacity-50"
+                        @click="increaseQuantity(product.id)"
+                      >
+                        <Plus class="h-3 w-3" />
+                      </button>
+                    </div>
+
+                    <!-- Add to Cart Button with Icon -->
+                    <button
+                      class="flex flex-1 items-center justify-center rounded-lg bg-blue-600 px-3 py-2 text-white transition-colors hover:bg-blue-700"
+                      title="加入购物车"
+                      @click="addToCart(product)"
+                    >
+                      <ShoppingCart class="h-4 w-4" />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -497,7 +597,37 @@ function gotoDetail(product) {
                     <button class="border border-gray-300 rounded-lg p-2 transition-colors hover:bg-gray-50" @click.stop>
                       <Heart class="h-4 w-4 text-gray-600 hover:text-red-500" />
                     </button>
-                    <button class="rounded-lg bg-blue-600 px-6 py-2 text-white font-medium transition-colors hover:bg-blue-700" @click.stop>
+
+                    <!-- Quantity Selector -->
+                    <div class="flex items-center border border-gray-300 rounded-lg" @click.stop>
+                      <button
+                        :disabled="getProductQuantity(product.id) <= 1"
+                        class="rounded-l-lg p-2 disabled:cursor-not-allowed hover:bg-gray-50 disabled:opacity-50"
+                        @click="decreaseQuantity(product.id)"
+                      >
+                        <Minus class="h-4 w-4" />
+                      </button>
+                      <input
+                        :value="getProductQuantity(product.id)"
+                        type="number"
+                        min="1"
+                        :max="product.stock || 99"
+                        class="w-16 border-0 text-center focus:outline-none"
+                        @input="updateQuantity(product.id, $event.target.value)"
+                      >
+                      <button
+                        :disabled="getProductQuantity(product.id) >= (product.stock || 99)"
+                        class="rounded-r-lg p-2 disabled:cursor-not-allowed hover:bg-gray-50 disabled:opacity-50"
+                        @click="increaseQuantity(product.id)"
+                      >
+                        <Plus class="h-4 w-4" />
+                      </button>
+                    </div>
+
+                    <button
+                      class="rounded-lg bg-blue-600 px-6 py-2 text-white font-medium transition-colors hover:bg-blue-700"
+                      @click="addToCart(product)"
+                    >
                       加入购物车
                     </button>
                   </div>
