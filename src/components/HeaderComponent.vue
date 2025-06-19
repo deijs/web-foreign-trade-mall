@@ -1,41 +1,18 @@
 <script setup>
 import {
   Bell,
-  Camera,
-  Gamepad2,
   Heart,
-  Home,
-  Menu,
   Search,
   ShoppingCart,
-  Smartphone,
   User,
-  X,
 } from 'lucide-vue-next'
 import { ref } from 'vue'
 
 const searchQuery = ref('')
-const showMobileMenu = ref(false)
 const showUserMenu = ref(false)
-const showCategoryMenu = ref(false)
-
-const categories = ref([
-  { name: '电子产品', icon: Smartphone, href: '/category/electronics' },
-  { name: '数码影像', icon: Camera, href: '/category/digital' },
-  { name: '游戏娱乐', icon: Gamepad2, href: '/category/gaming' },
-  { name: '家居生活', icon: Home, href: '/category/home' },
-])
-
-function toggleMobileMenu() {
-  showMobileMenu.value = !showMobileMenu.value
-}
 
 function toggleUserMenu() {
   showUserMenu.value = !showUserMenu.value
-}
-
-function toggleCategoryMenu() {
-  showCategoryMenu.value = !showCategoryMenu.value
 }
 </script>
 
@@ -91,7 +68,6 @@ function toggleCategoryMenu() {
             <ShoppingCart class="h-5 w-5" />
             <span class="absolute h-5 w-5 flex items-center justify-center rounded-full bg-blue-600 text-xs text-white -right-1 -top-1">5</span>
           </button>
-
           <!-- User Menu -->
           <div class="relative">
             <button
@@ -112,59 +88,13 @@ function toggleCategoryMenu() {
           <LanguageSwitcher class="relative z-1000" />
 
           <!-- Mobile Menu -->
-          <button
+          <!-- <button
             class="rounded-lg p-2 md:hidden hover:bg-gray-100"
             @click="toggleMobileMenu"
           >
             <X v-if="showMobileMenu" class="h-5 w-5" />
             <Menu v-else class="h-5 w-5" />
-          </button>
-        </div>
-      </div>
-
-      <!-- Navigation -->
-      <nav class="hidden items-center border-t py-4 md:flex space-x-8">
-        <div class="relative">
-          <button
-            class="flex items-center font-medium transition-colors hover:text-blue-600"
-            @click="toggleCategoryMenu"
-          >
-            <Menu class="mr-2 h-4 w-4" />
-            全部分类
-          </button>
-
-          <div v-if="showCategoryMenu" class="absolute left-0 top-full z-50 mt-2 w-48 border rounded-lg bg-white py-2 shadow-lg">
-            <a
-              v-for="category in categories"
-              :key="category.name"
-              :href="category.href"
-              class="flex items-center px-4 py-2 hover:bg-gray-100"
-            >
-              <component :is="category.icon" class="mr-2 h-4 w-4" />
-              {{ category.name }}
-            </a>
-          </div>
-        </div>
-
-        <a href="/about" class="font-medium transition-colors hover:text-blue-600">
-          关于我们
-        </a>
-      </nav>
-
-      <!-- Mobile Menu -->
-      <div v-if="showMobileMenu" class="border-t py-4 md:hidden">
-        <div class="space-y-4">
-          <div class="px-4">
-            <input
-              v-model="searchQuery"
-              type="search"
-              placeholder="搜索产品..."
-              class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:border-blue-500 focus:outline-none"
-            >
-          </div>
-          <div class="space-y-2">
-            <a href="/about" class="block px-4 py-2 hover:bg-gray-100">关于我们</a>
-          </div>
+          </button> -->
         </div>
       </div>
     </div>

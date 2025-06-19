@@ -21,12 +21,13 @@ declare module 'vue-router/auto-routes' {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/[...all]': RouteRecordInfo<'/[...all]', '/:all(.*)', { all: ParamValue<true> }, { all: ParamValue<false> }>,
     '/about': RouteRecordInfo<'/about', '/about', Record<never, never>, Record<never, never>>,
-    '/category/': RouteRecordInfo<'/category/', '/category', Record<never, never>, Record<never, never>>,
+    '/category/[name]': RouteRecordInfo<'/category/[name]', '/category/:name', { name: ParamValue<true> }, { name: ParamValue<false> }>,
     '/detail/': RouteRecordInfo<'/detail/', '/detail', Record<never, never>, Record<never, never>>,
     '/hi/[name]': RouteRecordInfo<'/hi/[name]', '/hi/:name', { name: ParamValue<true> }, { name: ParamValue<false> }>,
     '/home/components/CategoryGrid': RouteRecordInfo<'/home/components/CategoryGrid', '/home/components/CategoryGrid', Record<never, never>, Record<never, never>>,
     '/home/components/HeroCarousel': RouteRecordInfo<'/home/components/HeroCarousel', '/home/components/HeroCarousel', Record<never, never>, Record<never, never>>,
     '/home/ProductHomepage': RouteRecordInfo<'/home/ProductHomepage', '/home/ProductHomepage', Record<never, never>, Record<never, never>>,
+    '/home/ProductHomepage copy': RouteRecordInfo<'/home/ProductHomepage copy', '/home/ProductHomepage copy', Record<never, never>, Record<never, never>>,
     '/README': RouteRecordInfo<'/README', '/README', Record<never, never>, Record<never, never>>,
   }
 }
