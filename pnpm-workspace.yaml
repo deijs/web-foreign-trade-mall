@@ -50,6 +50,7 @@ catalogs:
     '@unocss/reset': ^66.1.0-beta.7
     '@vueuse/core': ^13.0.0
 
+    axios: ^1.10.0
     i18n-jsautotranslate: ^3.16.0
     lucide-vue-next: ^0.514.0
     nprogress: ^0.2.0

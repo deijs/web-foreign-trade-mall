@@ -3,7 +3,8 @@
   "private": true,
   "packageManager": "pnpm@10.7.0",
   "scripts": {
-    "build": "vite-ssg build",
+    "build-ssg": "vite-ssg build",
+    "build": "vite build",
     "dev": "vite --port 3333 --open",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -20,6 +21,7 @@
     "@unhead/vue": "catalog:frontend",
     "@unocss/reset": "catalog:frontend",
     "@vueuse/core": "catalog:frontend",
+    "axios": "catalog:frontend",
     "i18n-jsautotranslate": "catalog:frontend",
     "lucide-vue-next": "catalog:frontend",
     "nprogress": "catalog:frontend",

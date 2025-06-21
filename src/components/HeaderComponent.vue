@@ -7,12 +7,25 @@ import {
   User,
 } from 'lucide-vue-next'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
+import { getPKApi } from '~/api'
+
+onMounted(async () => {
+  const { pkkey } = await getPKApi()
+  console.warn('pkkey:', pkkey)
+})
+
+const router = useRouter()
 const searchQuery = ref('')
 const showUserMenu = ref(false)
 
 function toggleUserMenu() {
   showUserMenu.value = !showUserMenu.value
+}
+
+function handleLogoClick() {
+  router.push('/')
 }
 </script>
 

@@ -284,9 +284,9 @@ function gotoDetail(product) {
     <div class="border-b bg-white">
       <div class="mx-auto px-4 py-4 container">
         <nav class="flex items-center text-sm text-gray-600 space-x-2">
-          <a href="/" class="hover:text-blue-600">首页</a>
+          <a href="javascript:;" class="hover:text-blue-600">首页</a>
           <ChevronRight class="h-4 w-4" />
-          <a href="/category" class="hover:text-blue-600">{{ categoryName }}</a>
+          <a href="javascript:;" class="hover:text-blue-600">{{ categoryName }}</a>
           <ChevronRight class="h-4 w-4" />
           <span class="text-gray-900 font-medium">{{ subcategoryName }}</span>
         </nav>
