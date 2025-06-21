@@ -14,9 +14,10 @@ import {
   Watch,
 } from 'lucide-vue-next'
 import { ref } from 'vue'
-
+import { useRouter } from 'vue-router'
 import HeroCarousel from './components/HeroCarousel.vue'
 
+const router = useRouter()
 // 所有分类数据
 const allCategories = ref([
   {
@@ -316,6 +317,10 @@ const selectedCategory = ref(allCategories.value[0])
 function handleCategoryChange(category) {
   selectedCategory.value = allCategories.value.find(cat => cat.id === category.id)
 }
+
+function handleSubcategoryClick(subcategory) {
+  router.push(`/category/${subcategory.name}`)
+}
 </script>
 
 <template>
@@ -371,8 +376,9 @@ function handleCategoryChange(category) {
               {{ subcategory.description }}
             </p>
             <a
-              :href="`/category/${subcategory.name}`"
+              href="javascript:void(0)"
               class="mt-auto w-full flex items-center justify-center border border-gray-300 rounded-lg px-4 py-2 text-center text-sm font-medium transition-colors hover:border-blue-200 hover:bg-blue-50"
+              @click="handleSubcategoryClick(subcategory)"
             >
               查看商品
               <ArrowRight class="ml-1 h-4 w-4" />

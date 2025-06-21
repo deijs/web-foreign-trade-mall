@@ -22,7 +22,7 @@ function toggleUserMenu() {
     <div class="mx-auto px-4 container">
       <div class="h-16 flex items-center justify-between">
         <!-- Logo -->
-        <a href="/" class="flex items-center space-x-2">
+        <a href="javascript:void(0)" class="flex items-center space-x-2" @click="handleLogoClick">
           <div class="h-8 w-8 flex items-center justify-center rounded-lg bg-blue-600">
             <span class="text-lg text-white font-bold">P</span>
           </div>

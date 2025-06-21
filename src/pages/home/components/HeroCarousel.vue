@@ -97,7 +97,7 @@ onUnmounted(() => {
 
 <template>
   <div
-    class="relative h-[500px] overflow-hidden md:h-[600px]"
+    class="relative h-[500px] overflow-hidden md:h-[500px]"
     @mouseenter="pauseAutoPlay"
     @mouseleave="resumeAutoPlay"
   >

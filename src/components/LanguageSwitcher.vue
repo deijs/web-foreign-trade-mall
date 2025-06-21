@@ -110,7 +110,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="container" class="relative">
+  <div id="translate" ref="container" class="relative">
     <!-- 当前语言显示 -->
     <button
       class="flex items-center border border-gray-200 rounded-md bg-white px-3 py-2 text-sm text-gray-700 font-medium transition-colors dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-700"

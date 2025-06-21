@@ -18,6 +18,7 @@ translate.whole.enableAll() // 整体翻译
 nextTick(() => {
   // 网页ajax请求触发自动翻译
   translate.request.listener.start()
+  translate.selectLanguageTag.show = false
   translate.execute()
   setTimeout(() => {
     // vue的input中的placeholder属性会在nextTick之后延迟渲染，而这个属性是没有别的方式来监听的，所以额外加一个定时器
